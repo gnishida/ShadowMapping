@@ -30,7 +30,7 @@ private:
 	GLuint vao;
 	GLuint program;
 	std::vector<Vertex> vertices;
-	glm::vec3 light_pos;
+	glm::vec3 light_dir;
 
 	ShadowMapping shadow;
 };

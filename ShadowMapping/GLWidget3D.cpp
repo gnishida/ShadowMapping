@@ -44,7 +44,9 @@ void GLWidget3D::initializeGL() {
 		std::cout << "Error: " << glewGetErrorString(err) << std::endl;
 	}
 
-	light_pos = glm::vec3(3, 5, 10);
+	// 光源位置をセット
+	// ShadowMappingは平行光源を使っている。この位置から原点方向を平行光源の方向とする。
+	light_dir = glm::normalize(glm::vec3(-3, -5, -10));
 
 	// load shaders
 	Shader shader;
@@ -74,7 +76,7 @@ void GLWidget3D::resizeGL(int width, int height) {
  * This function is called whenever the widget needs to be painted.
  */
 void GLWidget3D::paintGL() {
-	shadow.makeShadowMap(this, light_pos);
+	shadow.makeShadowMap(this, light_dir);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -85,7 +87,7 @@ void GLWidget3D::paintGL() {
 	glUniformMatrix4fv(glGetUniformLocation(program, "mvMatrix"),  1, GL_FALSE, &camera.mvMatrix[0][0]);
 
 	// pass the light direction to the shader
-	glm::vec3 light_dir = glm::normalize(-light_pos);
+	//glm::vec3 light_dir = glm::normalize(-light_pos);
 	glUniform1fv(glGetUniformLocation(program, "lightDir"), 3, &light_dir[0]);//.x, light_dir.y, light_dir.z);
 	
 	drawScene(0);	

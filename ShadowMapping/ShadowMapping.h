@@ -19,9 +19,11 @@ public:
 public:
 	ShadowMapping();
 
-	void updateShadowMatrix(const glm::vec3& light_pos);
 	void initShadow(int programId, int width, int height);
-	void makeShadowMap(GLWidget3D* glWidget3D, const glm::vec3& light_pos);
+	void makeShadowMap(GLWidget3D* glWidget3D, const glm::vec3& light_dir);
+
+private:
+	void updateShadowMatrix(const glm::vec3& light_dir);
 };
 
 
