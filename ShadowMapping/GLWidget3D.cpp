@@ -60,7 +60,7 @@ void GLWidget3D::initializeGL() {
 
 	// load a triangle model
 	OBJLoader::load("models/triangle.obj", vertices);
-	createVAO(vertices, vao);
+	createVAO();
 }
 
 /**
@@ -126,7 +126,7 @@ void GLWidget3D::drawScene(int drawMode) {
  */
 void GLWidget3D::loadOBJ(char* filename) {
 	OBJLoader::load(filename, vertices);
-	createVAO(vertices, vao);
+	createVAO();
 
 	shadow.makeShadowMap(this, glm::vec3(10, 10, 10));
 }
@@ -134,7 +134,7 @@ void GLWidget3D::loadOBJ(char* filename) {
 /**
  * Create VAO according to the vertices.
  */
-void GLWidget3D::createVAO(std::vector<Vertex>& vertices, GLuint& vao) {
+void GLWidget3D::createVAO() {
 	// create vao and bind it
 	glGenVertexArrays(1,&vao);
 	glBindVertexArray(vao);
