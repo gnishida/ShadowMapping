@@ -21,7 +21,9 @@ void OBJLoader::load(char* filename, std::vector<Vertex>& vertices)
  
 	std::vector<float> raw_vertices;
 	std::vector<float> raw_normals;
+	std::vector<float> raw_texCoords;
 	std::vector<unsigned int> v_elements;
+	std::vector<unsigned int> t_elements;
 	std::vector<unsigned int> n_elements;
 
 	while (!in.atEnd()) {
@@ -40,6 +42,12 @@ void OBJLoader::load(char* filename, std::vector<Vertex>& vertices)
 			raw_normals.push_back(values[0].toFloat());
 			raw_normals.push_back(values[1].toFloat());
 			raw_normals.push_back(values[2].toFloat());
+		} else if (line.startsWith("vt ")) {
+			int index1 = line.indexOf(QRegExp("[0-9\\.\\-]"), 2);
+			int index2 = line.lastIndexOf(QRegExp("[0-9]"));
+			QStringList values = line.mid(index1, index2 - index1 + 1).split(" ");
+			raw_texCoords.push_back(values[0].toFloat());
+			raw_texCoords.push_back(values[1].toFloat());
 		} else if (line.startsWith("f ")) {
 			int index1 = line.indexOf(QRegExp("[0-9]"), 2);
 			int index2 = line.lastIndexOf(QRegExp("[0-9]"));
@@ -50,6 +58,13 @@ void OBJLoader::load(char* filename, std::vector<Vertex>& vertices)
 				b = values[i+1].split("/")[0].toUInt() - 1;
 				c = values[i+2].split("/")[0].toUInt() - 1;
 				v_elements.push_back(a); v_elements.push_back(b); v_elements.push_back(c);
+
+				if (values[0].split("/").size() >= 2 && values[0].split("/")[1].size() > 0) {
+					a = values[0].split("/")[1].toUInt() - 1;
+					b = values[i+1].split("/")[1].toUInt() - 1;
+					c = values[i+2].split("/")[1].toUInt() - 1;
+					t_elements.push_back(a); t_elements.push_back(b); t_elements.push_back(c);
+				}
 
 				if (values[0].split("/").size() >= 3 && values[0].split("/")[2].size() > 0) {
 					a = values[0].split("/")[2].toUInt() - 1;
@@ -98,14 +113,25 @@ void OBJLoader::load(char* filename, std::vector<Vertex>& vertices)
 			}
 		}
 
-		// assign some colors and texture coordinates
+		if (t_elements.size() > 0) {
+			for (int j = 0; j < 2; ++j) {
+				vertices[i].texCoord[j] = raw_texCoords[t_elements[i]*2 + j];
+				vertices[i+1].texCoord[j] = raw_texCoords[t_elements[i+1]*2 + j];
+				vertices[i+2].texCoord[j] = raw_texCoords[t_elements[i+2]*2 + j];
+			}
+		} else {
+			for (int j = 0; j < 3; ++j) {
+				vertices[i].texCoord[j] = 0.0f;
+				vertices[i+1].texCoord[j] = j == 0 ? 1.0f : 0.0f;
+				vertices[i+2].texCoord[j] = j == 0 ? 0.0f : 1.0f;
+			}
+		}
+
+		// assign some colors
 		for (int j = 0; j < 3; ++j) {
 			vertices[i].color[j] = 1.0f;
 			vertices[i+1].color[j] = 1.0f;
 			vertices[i+2].color[j] = 1.0f;
-			vertices[i].texCoord[j] = 0.0f;
-			vertices[i+1].texCoord[j] = j == 0 ? 1.0f : 0.0f;
-			vertices[i+2].texCoord[j] = j == 0 ? 0.0f : 1.0f;
 		}
 	}
 }
