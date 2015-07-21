@@ -7,15 +7,14 @@
 #include <QMouseEvent>
 #include "Camera.h"
 #include "ShadowMapping.h"
+#include "RenderManager.h"
 
 class MainWindow;
 
 class GLWidget3D : public QGLWidget {
 public:
 	void drawScene(int drawMode);
-	void loadOBJ(char* filename);
-	void createVAO();
-	GLuint loadTexture(const QString& filename);
+	void loadOBJ(const QString& obj_file, const QString& texture_file, const QString& object_name);
 
 protected:
 	void initializeGL();
@@ -27,11 +26,12 @@ protected:
 
 private:
 	Camera camera;
-	GLuint vao;
-	GLuint program;
-	std::vector<Vertex> vertices;
+	//GLuint vao;
+	//GLuint program;
+	//std::vector<Vertex> vertices;
 	glm::vec3 light_dir;
 
-	ShadowMapping shadow;
+	RenderManager renderManager;
+	//ShadowMapping shadow;
 };
 

@@ -16,6 +16,12 @@ void MainWindow::onFileOpen() {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Open OBJ file..."), "", tr("OBJ Files (*.obj)"));
 	if (filename.isEmpty()) return;
 
-	glWidget->loadOBJ(filename.toUtf8().data());
+	QString filename2 = QFileDialog::getOpenFileName(this, tr("Open texture file..."), "", tr("texture Files (*.png)"));
+	if (!filename2.isEmpty()) {
+		glWidget->loadOBJ(filename.toUtf8().data(), filename2.toUtf8().data(), "object2");
+	} else {
+		glWidget->loadOBJ(filename.toUtf8().data(), "", "object2");
+	}
+
 	glWidget->updateGL();
 }

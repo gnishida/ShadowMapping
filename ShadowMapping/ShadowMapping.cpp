@@ -90,11 +90,11 @@ void ShadowMapping::makeShadowMap(GLWidget3D* glWidget3D, const glm::vec3& light
 
 	
 	// この時点で、textureDepthにデプス情報が格納されている
-
 	
 	glBindFramebuffer(GL_FRAMEBUFFER,0);
-
+	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_POLYGON_OFFSET_FILL);
+	glDrawBuffer(GL_BACK);
 
 	// ビューポートを戻す
 	glViewport(0,0,origWidth,origHeigh);

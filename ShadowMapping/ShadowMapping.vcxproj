@@ -150,6 +150,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="OBJLoader.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShadowMapping.cpp" />
   </ItemGroup>
@@ -199,6 +200,7 @@
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
     <ClInclude Include="GLWidget3D.h" />
     <ClInclude Include="OBJLoader.h" />
+    <ClInclude Include="RenderManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShadowMapping.h" />
     <ClInclude Include="Vertex.h" />

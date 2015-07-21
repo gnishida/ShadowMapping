@@ -51,10 +51,8 @@ void main()
 	vec4 ambient = vec4(0.2, 0.2, 0.2, 1.0);
 	vec4 diffuse = vec4(0.8, 0.8, 0.8, 1.0) * max(0.0, dot(-lightDir, varNormal));
 
-	outputF = (ambient + diffuse) * outputF;
-
 	float shadow_coef = 0.95;
-	shadow_coef= shadowCoef();
+	shadow_coef = shadowCoef();
 	outputF = (ambient + (shadow_coef + 0.05) * diffuse) * outputF;
 }
 
