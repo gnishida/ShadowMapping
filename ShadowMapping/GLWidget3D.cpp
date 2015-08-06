@@ -88,8 +88,7 @@ void GLWidget3D::drawScene(int drawMode) {
 		glUniform1i(glGetUniformLocation(renderManager.program, "shadowState"), 2);
 	}
 
-	renderManager.render("object1");
-	renderManager.render("object2");
+	renderManager.renderAll();
 }
 
 /**
