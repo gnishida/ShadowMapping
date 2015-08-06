@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 #include "OBJLoader.h"
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
 
 /**
  * This event handler is called when the mouse press events occur.
@@ -35,7 +36,7 @@ void GLWidget3D::mouseMoveEvent(QMouseEvent *e) {
  * This function is called once before the first call to paintGL() or resizeGL().
  */
 void GLWidget3D::initializeGL() {
-	renderManager.init();
+	renderManager.init(4096);
 
 	// 光源位置をセット
 	// ShadowMappingは平行光源を使っている。この位置から原点方向を平行光源の方向とする。
@@ -61,7 +62,10 @@ void GLWidget3D::resizeGL(int width, int height) {
  * This function is called whenever the widget needs to be painted.
  */
 void GLWidget3D::paintGL() {
-	renderManager.updateShadowMap(this, light_dir);
+	glm::mat4 light_pMatrix = glm::ortho<float>(-10, 10, -10, 10, 0.1, 100);
+	glm::mat4 light_mvMatrix = glm::lookAt(-light_dir * 10.0f, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	glm::mat4 light_mvpMatrix = light_pMatrix * light_mvMatrix;
+	renderManager.updateShadowMap(this, light_dir, light_mvpMatrix);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
