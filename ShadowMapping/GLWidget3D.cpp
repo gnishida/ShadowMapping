@@ -6,23 +6,20 @@
 /**
  * This event handler is called when the mouse press events occur.
  */
-void GLWidget3D::mousePressEvent(QMouseEvent *e)
-{
+void GLWidget3D::mousePressEvent(QMouseEvent *e) {
 	camera.mousePress(e->x(), e->y());
 }
 
 /**
  * This event handler is called when the mouse release events occur.
  */
-void GLWidget3D::mouseReleaseEvent(QMouseEvent *e)
-{
+void GLWidget3D::mouseReleaseEvent(QMouseEvent *e) {
 }
 
 /**
  * This event handler is called when the mouse move events occur.
  */
-void GLWidget3D::mouseMoveEvent(QMouseEvent *e)
-{
+void GLWidget3D::mouseMoveEvent(QMouseEvent *e) {
 	if (e->buttons() & Qt::LeftButton) { // Rotate
 		camera.rotate(e->x(), e->y());
 	} else if (e->buttons() & Qt::MidButton) { // Move
@@ -75,7 +72,6 @@ void GLWidget3D::paintGL() {
 	glUniformMatrix4fv(glGetUniformLocation(renderManager.program, "mvMatrix"),  1, GL_FALSE, &camera.mvMatrix[0][0]);
 
 	// pass the light direction to the shader
-	//glm::vec3 light_dir = glm::normalize(-light_pos);
 	//glUniform1fv(glGetUniformLocation(renderManager.program, "lightDir"), 3, &light_dir[0]);
 	glUniform3f(glGetUniformLocation(renderManager.program, "lightDir"), light_dir.x, light_dir.y, light_dir.z);
 	
@@ -92,27 +88,8 @@ void GLWidget3D::drawScene(int drawMode) {
 		glUniform1i(glGetUniformLocation(renderManager.program, "shadowState"), 2);
 	}
 
-	// use color mode
-	//glUniform1i(glGetUniformLocation(program, "mode"), 1);
-
-	// use texture mode
-	/*
-	GLuint texture = loadTexture("textures/grass.jpg");
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(program, "mode"), 2);
-	glUniform1i(glGetUniformLocation (program, "tex0"), 0);
-	*/
-
 	renderManager.render("object1");
 	renderManager.render("object2");
-
-	// bind the vao and draw it.
-	/*
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-	glBindVertexArray(0);
-	*/
 }
 
 /**
